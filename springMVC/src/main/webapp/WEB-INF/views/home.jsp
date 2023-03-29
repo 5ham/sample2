@@ -31,6 +31,6 @@
 <br>
 <a href="<%=request.getContextPath()%>/upload/ex01.do">파일 업로드 예제로 가기</a>
 
-gitgitgitggit
+samplesamplesample
 </body>
 </html>
