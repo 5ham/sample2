@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="edu.study.mapper.boardMapper">
+	<select id="selectAll" resultType="boardVO" parameterType="searchVO">
+		select *
+		  from board b, user u
+		 where b.uno = u.uno
+		 <if test='searchType != null and searchType eq "title"'>
+		 	and btitle like concat('%',#{searchValue},'%')
+		 </if>
+		 <if test='searchType != null and searchType eq "writer"'>
+		 	and uid like concat('%',#{searchValue},'%')
+		 </if>
+		 <if test="searchKind != null">
+		    and bkind = #{searchKind}
+		 </if>
+	</select>
+	
+	<select id="selectByBno" resultType="boardVO" parameterType="int" >
+		select *
+		  from board
+		 where bno = #{bno}
+	</select>
+	
+	<update id="update" parameterType="boardVO">
+		UPDATE board 
+		   SET btitle = #{btitle}
+		     , bkind  = #{bkind}
+		     , bnote  = #{bnote}
+		 WHERE bno    = #{bno}
+	</update>
+	
+	<insert id="insert" parameterType="boardVO">
+		<![CDATA[
+		INSERT INTO board(
+			 btitle
+			,bkind
+			,uno
+			,bnote
+		)VALUES(
+			 #{btitle}
+			,#{bkind}
+			,#{uno}
+			,#{bnote}
+		)
+		]]>
+		<selectKey resultType="int" order="AFTER" keyProperty="bno" >
+			SELECT MAX(bno) FROM board
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		DELETE
+		  FROM board
+		 WHERE bno = #{bno}
+	</delete>
+	
+	<delete id="deleteReply" parameterType="int">
+		DELETE
+		  FROM reply
+		 WHERE bno = #{bno}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
